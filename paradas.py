@@ -27,17 +27,24 @@ except (Exception, psycopg2.Error) as erro:
 #    Nome : str
 #    Materia : str
 
-def AdicionarAluno(Nome):
-    cur.execute("SELECT COUNT(*) FROM \"Alunos\"")
-    ID = cur.fetchone()[0]
-    ID += 1
-    cur.execute("INSERT INTO \"Alunos\"(\"ID\", \"Nome\") VALUES (%s, %s)", (ID, Nome))
-    conn.commit()
+def AdicionarAluno(ID, Nome):
+    try:
+        cur.execute("INSERT INTO \"Alunos\"(\"ID\", \"Nome\") VALUES (%s, %s)", (ID, Nome))
+        conn.commit()
+    except psycopg2.Error as e:
+        print(e)
 
 def RemoverAluno(ID):
     cur.execute(f"DELETE FROM \"Alunos\" WHERE \"ID\" = {ID}")
     conn.commit()
     #isso aqui nao vai pro produto final se nao vai da so problema, so pra teste
+
+def EditarAluno(ID, NomeNovo):
+    try:
+        cur.execute("UPDATE \"Alunos\" SET \"Nome\" = %s WHERE \"ID\" = %s", (NomeNovo, ID))
+        conn.commit()
+    except psycopg2.Error as e:
+        print(e)
 
 def AdiconarProfessor(ID, Nome, Materia):
     try:
@@ -55,7 +62,7 @@ def CriarSala(IDProfessor, Horario):
     try:
         cur.execute(f"SELECT \"Materia\" FROM \"Professores\" WHERE \"ID\" = {IDProfessor}")
         Materia = cur.fetchone()
-        cur.execute("INSERT INTO \"Salas\"(\"IDPROFESSOR\", \"Materia\", \"Horario\", \"Alunos\" ) VALUES (%s, %s, %s, %s)", (IDProfessor, Materia, Horario, "0"))
+        cur.execute("INSERT INTO \"Salas\"(\"IDPROFESSOR\", \"Materia\", \"Horario\", \"Alunos\" ) VALUES (%s, %s, %s, %s)", (IDProfessor, Materia, Horario," 0 "))
         conn.commit()
     except psycopg2.Error as e:
         print(e)
