@@ -34,10 +34,14 @@ def AdicionarAluno(ID, Nome):
     except psycopg2.Error as e:
         print(e)
 
+
 def RemoverAluno(ID):
-    cur.execute(f"DELETE FROM \"Alunos\" WHERE \"ID\" = {ID}")
-    conn.commit()
-    #isso aqui nao vai pro produto final se nao vai da so problema, so pra teste
+    try:
+        cur.execute(f"DELETE FROM \"Alunos\" WHERE \"ID\" = {ID}")
+        conn.commit()
+    except psycopg2.Error as e:
+        print(e)
+
 
 def EditarAluno(ID, NomeNovo):
     try:
@@ -46,6 +50,7 @@ def EditarAluno(ID, NomeNovo):
     except psycopg2.Error as e:
         print(e)
 
+
 def AdiconarProfessor(ID, Nome, Materia):
     try:
         cur.execute("INSERT INTO \"Professores\"(\"ID\", \"Nome\", \"Materia\") VALUES (%s, %s, %s)", (ID, Nome, Materia))
@@ -53,10 +58,27 @@ def AdiconarProfessor(ID, Nome, Materia):
         #cur.execute(f"CREATE TABLE {nometabela} ( \"IDPROFESSOR\" SERIAL PRIMARY KEY, \"Materia\" VARCHAR(100),\"Horario\" INT, \"Alunos\" VARCHAR)")
         #query = "INSERT INTO %s(\"IDPROFESSOR\") VALUES (%%s)" % nometabela
         #cur.execute(query, (ID,))
+        conn.commit()
     except psycopg2.Error as e:
         print(e)
 
-    conn.commit()
+
+def RemoverProfessor(ID):
+    try:
+        cur.execute(f"DELETE FROM \"Professores\" WHERE \"ID\" = {ID}")
+        conn.commit()
+    except psycopg2.Error as e:
+        print(e)
+
+
+def EditarProfessor(ID, NomeNovo, MateriaNova):
+    try:
+        cur.execute("UPDATE \"Professores\" SET \"Nome\" = %s WHERE \"ID\" = %s", (NomeNovo, ID))
+        cur.execute("UPDATE \"Professores\" SET \"Materia\" = %s WHERE \"ID\" = %s", (MateriaNova, ID))
+        conn.commit()
+    except psycopg2.Error as e:
+        print(e)
+
 
 def CriarSala(IDProfessor, Horario):
     try:
@@ -67,9 +89,11 @@ def CriarSala(IDProfessor, Horario):
     except psycopg2.Error as e:
         print(e)
 
+
 def RemoverSala(IDProfessor):
     cur.execute(f"DELETE FROM \"Salas\" WHERE \"IDPROFESSOR\" = {IDProfessor}")
     conn.commit()
+
 
 def ColocarAluno(IDAluno, IDProfessor):
     if IDAluno == 0 :
@@ -79,6 +103,7 @@ def ColocarAluno(IDAluno, IDProfessor):
     #cur.execute("UPDATE \"Salas\" SET \"Alunos\" = \"Alunos\" || '[%s]' WHERE \"IDPROFESSOR\" = %s;", (IDALUNO, IDPROFESSOR))
     #cur.execute("INSERT INTO \"Salas\"(\"Alunos\") VALUES (%s) WHERE \"IDPROFESSOR\" = (%s)", (IDALUNO, IDPROFESSOR))
     conn.commit()
+
 
 def TirarAluno(IDAluno, IDProfessor):
     if IDAluno == 0 :
