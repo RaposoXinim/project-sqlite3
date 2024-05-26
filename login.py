@@ -9,7 +9,7 @@ root_login.geometry('925x500+300+200')
 root_login.configure(bg='#fff')
 root_login.resizable(False, False)
 
-def logar():
+def logar(): #TODO
     nome=ent_usuario.get()
     senha=ent_senha.get()
     
