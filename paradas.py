@@ -1,19 +1,24 @@
 from dataclasses import dataclass
 import psycopg2
 
-try:
-    conn = psycopg2.connect(
-        database="Trabalho",
-        user="postgres",
-        password="123",
-        host="localhost",
-        port="5432"
-    )
 
-    cur = conn.cursor()
+def conectar():
+    try:
+        conn = psycopg2.connect(
+            database="Trabalho",
+            user="postgres",
+            password="123",
+            host="localhost",
+            port="5432"
+        )
+        return conn
+    except (Exception, psycopg2.Error) as erro:
+        print("Erro ao conectar ao PostgreSQL", erro)
 
-except (Exception, psycopg2.Error) as erro:
-    print("Erro ao conectar ao PostgreSQL", erro)
+conn=conectar()
+
+cur = conn.cursor()
+
 
 
 #@dataclass
@@ -26,6 +31,7 @@ except (Exception, psycopg2.Error) as erro:
 #    ID : int
 #    Nome : str
 #    Materia : str
+
 
 def AdicionarAluno(ID, Nome):
     try:
