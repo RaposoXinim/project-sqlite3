@@ -93,6 +93,74 @@ for item in dados:
 entry = Entry(bot, width=7)
 entry.pack(pady=10)
 
+def checarid():
+    ID = entry.get()
+    if ID == '':
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
+    else:
+        cur.execute(f"SELECT 1 FROM \"Professores\" WHERE \"ID\" = {ID}")
+        resultado = cur.fetchone()
+        if resultado is None:
+            msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
+        else:
+            botao_editar()
+
+
+def botao_editar():
+    ID = entry.get()
+    if ID == '':
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
+    else:
+        janela_adicionar = Toplevel()
+        janela_adicionar.title("Editar Professor")
+        form_titulo = Frame(janela_adicionar)
+        form_titulo.pack(side=TOP)
+        form_contato = Frame(janela_adicionar)
+        form_contato.pack(side=TOP, pady=10)
+        width = 400
+        height = 300
+        sc_width = janela_adicionar.winfo_screenwidth()
+        sc_height = janela_adicionar.winfo_screenheight()
+        x = (sc_width/2) - (width/2)
+        y = (sc_height/2) - (height/2)
+        janela_adicionar.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        janela_adicionar.resizable(0, 0)
+
+        lbl_title = Label(form_titulo, text=f"Editando o professor de ID {ID}",
+                        font=('arial', 18), bg='blue', width=280)
+        lbl_title.pack(fill=X)
+        lbl_nome = Label(form_contato, text='ID', font=('arial', 12))
+        lbl_nome.grid(row=0, sticky=W)
+        lbl_telefone = Label(form_contato, text='Nome', font=('arial', 12))
+        lbl_telefone.grid(row=1, sticky=W)
+        lbl_idade = Label(form_contato, text='Matéria', font=('arial', 12))
+        lbl_idade.grid(row=2, sticky=W)
+
+        # --------- ENTRY - CADASTRAR -------------
+        
+        nome_entry = Entry(form_contato, font=('arial', 12))
+        nome_entry.grid(row=1, column=1)
+        nome_entry.focus()
+        materia_entry = Entry(form_contato, font=('arial', 12))
+        materia_entry.grid(row=2, column=1)
+
+        def botaoeditar():
+            if nome_entry.get() == "" or materia_entry.get() == "":
+                msb.showwarning("", "Por favor, digite todos os campos.", icon="warning")
+            else:
+                Nome = nome_entry.get()
+                Materia = materia_entry.get()
+                EditarProfessor(ID, Nome, Materia)
+                tree.delete(*tree.get_children())
+                dados = fetch_data()
+                for item in dados:
+                    tree.insert('', tk.END, values=item)
+                janela_adicionar.destroy()
+
+    # --------- BOTÃO - CADASTRAR -------------
+    bttn_enviardados = Button(form_contato, text="Confirmar",
+                            width=50, command=botaoeditar)
+    bttn_enviardados.grid(row=6, columnspan=2, pady=10)
 
 
 def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o respectivo professor, depois atauzaliza a Treeview.
@@ -160,7 +228,7 @@ butao = Button(mid1, text="Remover", command=botao_remover)
 butao.pack(pady=10)
 butao2 = Button(mid2, text="Adicionar", command=botao_adicionar)
 butao2.pack(pady=10)
-butao3 = Button(mid3, text="Remover")
+butao3 = Button(mid3, text="Editar", command=checarid)
 butao3.pack(pady=10)
 
 
