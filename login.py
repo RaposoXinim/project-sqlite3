@@ -3,7 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
 from registro import root_registrar
-from Tk_Banco import logar
+from Tk_Banco import logar, Gerarlog
 
 root_login=Tk()
 root_login.title('Login')
@@ -21,6 +21,7 @@ def entrar():
         try: 
             resultado=logar(nome, senha)
             if resultado: #TODO
+                Gerarlog(nome)
                 messagebox.showinfo(message="Entrou")
         except:
             print("Erro ao chamar a função logar")

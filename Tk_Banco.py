@@ -1,5 +1,6 @@
 import sqlite3
 from tkinter import messagebox
+import datetime
 def conectar():
     try:
         conn = sqlite3.connect('escola.db')
@@ -20,8 +21,10 @@ def registro(login, senha):
     """)
         cur.execute("INSERT INTO Cadastros VALUES (?, ?)", (login, senha))
         conn.commit()
+        return True
     except sqlite3.IntegrityError:
         messagebox.showerror("Erro", "Usuário já existe. Escolha outro Usuário.")
+        return False
     finally:
         conn.close()
 
@@ -40,3 +43,8 @@ def logar(login, senha):
         print(f"Erro ao realizar o login: {e}")
     finally:
         conn.close()
+
+def Gerarlog(usuario):
+    with open("log.txt", "a") as arquivo:
+        time = datetime.datetime.now()
+        arquivo.write(f"{time} Usuario: {usuario}\n")
