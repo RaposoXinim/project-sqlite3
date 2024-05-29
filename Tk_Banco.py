@@ -1,9 +1,11 @@
 import sqlite3
 from tkinter import messagebox
 import datetime
+import os
 def conectar():
     try:
-        conn = sqlite3.connect('escola.db')
+        
+        conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'escola.db'))
 
         return conn
 
