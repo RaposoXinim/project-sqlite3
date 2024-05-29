@@ -13,18 +13,22 @@ def root_registrar(root_registro):
     def registrar():
         login=ent_usuario.get()
         senha=ent_senha.get()
-        try:
-            registro(login, senha)
-            root_registro.destroy()
-        except:
-            root_error=Toplevel(root_registro)
-            root_error.wm_title("Erro")
-            
-            lb_error=Label(root_error, text ="Erro ao cadastrar")
-            lb_error.grid(row=0, column=0)
-            
-            btn_error=Button(root_error, text="Ok", command=root_error.destroy())
-            btn_error.pack()
+        if login == "Usuário" or login == "" or senha == "" or senha == "Senha":
+            messagebox.showerror(message="Preencha corretamente todos os campos!")
+        else:
+            try:
+                if registro(login, senha):
+                    messagebox.showinfo(message="Cadastrado com sucesso!")
+                    root_registro.destroy()
+            except:
+                root_error=Toplevel(root_registro)
+                root_error.wm_title("Erro")
+                
+                lb_error=Label(root_error, text ="Erro ao cadastrar")
+                lb_error.grid(row=0, column=0)
+                
+                btn_error=Button(root_error, text="Ok", command=root_error.destroy())
+                btn_error.pack()
 
 
 

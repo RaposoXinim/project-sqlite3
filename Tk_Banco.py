@@ -17,8 +17,8 @@ def registro(login, senha):
     try:
         cur=conn.cursor()
         cur.execute("""CREATE TABLE IF NOT EXISTS Cadastros(
-    LOGIN TEXT PRIMARY KEY,
-    SENHA TEXT
+    LOGIN TEXT PRIMARY KEY NOT NULL,
+    SENHA TEXT NOT NULL
     )
     """)
         cur.execute("INSERT INTO Cadastros VALUES (?, ?)", (login, senha))
