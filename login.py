@@ -3,6 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
 from registro import root_registrar
+from Tk_Banco import logar
 
 root_login=Tk()
 root_login.title('Login')
@@ -10,12 +11,19 @@ root_login.geometry('925x500+300+200')
 root_login.configure(bg='#fff')
 root_login.resizable(False, False)
 
-def logar():
+def entrar():
     nome=ent_usuario.get()
     senha=ent_senha.get()
     
     if nome=='admin' and senha=='1234':
-        print('Boa tentativa!')
+        messagebox.showinfo(message="Boa tentativa!")
+    else:
+        try: 
+            resultado=logar(nome, senha)
+            if resultado: #TODO
+                messagebox.showinfo(message="Entrou")
+        except:
+            print("Erro ao chamar a função logar")
 
 
 image = Image.open(os.path.join(os.path.dirname(__file__), 'login.jpg'))
@@ -64,7 +72,7 @@ ent_senha.bind('<FocusIn>', on_enter)
 ent_senha.bind('<FocusOut>', on_leave)
 Frame(fr_login, width=295, height=2, bg='black').place(x=30, y=210)
 
-Button(fr_login,width=39,pady=7,text='Entrar', bg='#57a1f8', fg='White', border=0, command=logar).place(x=35,y=240)
+Button(fr_login,width=39,pady=7,text='Entrar', bg='#57a1f8', fg='White', border=0, command=entrar).place(x=35,y=240)
 
 lb_pergunta=Label(fr_login,text='Não tem conta?', fg='black', bg='white', font=('Microsoft YaHei UI Light', 9))
 lb_pergunta.place(x= 125, y=288)

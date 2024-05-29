@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from Tk_Banco import registro
 from PIL import Image, ImageTk
 import os
 
@@ -9,8 +10,21 @@ def root_registrar(root_registro):
     root_registro.configure(bg='#fff')
     root_registro.resizable(False, False)
 
-    def registrar(): #TODO
-        root_registro.destroy()
+    def registrar():
+        login=ent_usuario.get()
+        senha=ent_senha.get()
+        try:
+            registro(login, senha)
+            root_registro.destroy()
+        except:
+            root_error=Toplevel(root_registro)
+            root_error.wm_title("Erro")
+            
+            lb_error=Label(root_error, text ="Erro ao cadastrar")
+            lb_error.grid(row=0, column=0)
+            
+            btn_error=Button(root_error, text="Ok", command=root_error.destroy())
+            btn_error.pack()
 
 
 
@@ -63,3 +77,7 @@ def root_registrar(root_registro):
     Button(fr_registro,width=39,pady=7,text='Cadastrar', bg='#57a1f8', fg='White', border=0, command=registrar).place(x=35,y=240)
 
     root_registro.mainloop()
+    
+if __name__ == "__main__":
+    root_registro=Tk()
+    root_registrar(root_registro)
