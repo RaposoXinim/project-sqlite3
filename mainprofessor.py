@@ -56,6 +56,8 @@ bot.pack(side=TOP)
 #tableMargin = Frame(root, width=500)
 #tableMargin.pack(side=TOP)
 
+#Funções
+
 def item_selecionado(event):
     for selected_item in tree.selection():
         item = tree.item(selected_item)
@@ -69,29 +71,6 @@ def fetch_data():
     rows = cur.fetchall()
     
     return rows
-
-
-tree = ttk.Treeview(top, columns=("ID", "Nome", "Materia"), show='headings')
-
-# Definição das colunas
-tree.heading("ID", text="ID")
-tree.heading("Nome", text="Nome")
-tree.heading("Materia", text="Materia")
-
-# Empacotamento da Treeview
-tree.pack(pady=20)
-
-# Ligação do evento de seleção de item
-tree.bind('<<TreeviewSelect>>', item_selecionado)
-
-# Busca de dados do banco de dados e inserção na Treeview
-dados = fetch_data()
-for item in dados:
-    tree.insert('', tk.END, values=item)
-
-
-entry = Entry(bot, width=7)
-entry.pack(pady=10)
 
 def checarid():
     ID = entry.get()
@@ -118,7 +97,7 @@ def botao_editar():
         form_contato = Frame(janela_adicionar)
         form_contato.pack(side=TOP, pady=10)
         width = 400
-        height = 300
+        height = 200
         sc_width = janela_adicionar.winfo_screenwidth()
         sc_height = janela_adicionar.winfo_screenheight()
         x = (sc_width/2) - (width/2)
@@ -127,14 +106,14 @@ def botao_editar():
         janela_adicionar.resizable(0, 0)
 
         lbl_title = Label(form_titulo, text=f"Editando o professor de ID {ID}",
-                        font=('arial', 18), bg='blue', width=280)
+                        font=('arial', 18), bg='#57a1f9', width=280)
         lbl_title.pack(fill=X)
-        lbl_nome = Label(form_contato, text='ID', font=('arial', 12))
-        lbl_nome.grid(row=0, sticky=W)
-        lbl_telefone = Label(form_contato, text='Nome', font=('arial', 12))
-        lbl_telefone.grid(row=1, sticky=W)
-        lbl_idade = Label(form_contato, text='Matéria', font=('arial', 12))
-        lbl_idade.grid(row=2, sticky=W)
+        lbl_id = Label(form_contato, text='ID', font=('arial', 12))
+        lbl_id.grid(row=0, sticky=W)
+        lbl_nome = Label(form_contato, text='Nome', font=('arial', 12))
+        lbl_nome.grid(row=1, sticky=W)
+        lbl_materia = Label(form_contato, text='Matéria', font=('arial', 12))
+        lbl_materia.grid(row=2, sticky=W)
 
         # --------- ENTRY - CADASTRAR -------------
         
@@ -165,11 +144,13 @@ def botao_editar():
 
 def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o respectivo professor, depois atauzaliza a Treeview.
     ID = entry.get()
+
     RemoverProfessor(ID)
     tree.delete(*tree.get_children())
     dados = fetch_data()
     for item in dados:
         tree.insert('', tk.END, values=item)
+
 
 def botao_adicionar():
     janela_adicionar = Toplevel()
@@ -179,7 +160,7 @@ def botao_adicionar():
     form_contato = Frame(janela_adicionar)
     form_contato.pack(side=TOP, pady=10)
     width = 400
-    height = 300
+    height = 200
     sc_width = janela_adicionar.winfo_screenwidth()
     sc_height = janela_adicionar.winfo_screenheight()
     x = (sc_width/2) - (width/2)
@@ -187,15 +168,15 @@ def botao_adicionar():
     janela_adicionar.geometry("%dx%d+%d+%d" % (width, height, x, y))
     janela_adicionar.resizable(0, 0)
 
-    lbl_title = Label(form_titulo, text="Inserindo contatos",
-                      font=('arial', 18), bg='blue', width=280)
+    lbl_title = Label(form_titulo, text="Adicionando Professor",
+                      font=('arial', 18), bg='#57a1f9', width=280)
     lbl_title.pack(fill=X)
-    lbl_nome = Label(form_contato, text='ID', font=('arial', 12))
-    lbl_nome.grid(row=0, sticky=W)
-    lbl_telefone = Label(form_contato, text='Nome', font=('arial', 12))
-    lbl_telefone.grid(row=1, sticky=W)
-    lbl_idade = Label(form_contato, text='Matéria', font=('arial', 12))
-    lbl_idade.grid(row=2, sticky=W)
+    lbl_id = Label(form_contato, text='ID', font=('arial', 12))
+    lbl_id.grid(row=0, sticky=W)
+    lbl_nome = Label(form_contato, text='Nome', font=('arial', 12))
+    lbl_nome.grid(row=1, sticky=W)
+    lbl_materia = Label(form_contato, text='Matéria', font=('arial', 12))
+    lbl_materia.grid(row=2, sticky=W)
 
     # --------- ENTRY - CADASTRAR -------------
     id_entry = Entry(form_contato, font=('arial', 12))
@@ -224,6 +205,31 @@ def botao_adicionar():
                             width=50, command=botaoadicionar)
     bttn_enviardados.grid(row=6, columnspan=2, pady=10)
 
+#Treeview
+
+tree = ttk.Treeview(top, columns=("ID", "Nome", "Materia"), show='headings')
+
+# Definição das colunas
+tree.heading("ID", text="ID")
+tree.heading("Nome", text="Nome")
+tree.heading("Materia", text="Materia")
+
+# Empacotamento da Treeview
+tree.pack(pady=20)
+
+# Ligação do evento de seleção de item
+tree.bind('<<TreeviewSelect>>', item_selecionado)
+
+# Busca de dados do banco de dados e inserção na Treeview
+dados = fetch_data()
+for item in dados:
+    tree.insert('', tk.END, values=item)
+
+#Entrada ID
+entry = Entry(bot, width=7)
+entry.pack(pady=10)
+
+#Botões
 butao = Button(mid1, text="Remover", command=botao_remover)
 butao.pack(pady=10)
 butao2 = Button(mid2, text="Adicionar", command=botao_adicionar)
