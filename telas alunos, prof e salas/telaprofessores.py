@@ -1,7 +1,9 @@
-from paradassqlite import *
-from tkinter import *
+from paradassqlite import AdiconarProfessor, RemoverProfessor, EditarProfessor, cur
+from tkinter import Frame, LEFT, TOP, N, W, E, S, Label, Tk, Toplevel, Entry, X, Button
 import tkinter as tk
 import tkinter.ttk as ttk
+import sqlite3
+import tkinter.messagebox as msb
 
 
 
@@ -38,23 +40,10 @@ mid3 = Frame(mid, bg='#fff')
 mid3.pack(side=LEFT)
 bot = Frame(mainframe, bg='#fff')
 bot.pack(side=TOP)
-
-#topo = Frame(root, width=500, bd=1, relief=SOLID)
-#topo.pack(side=TOP)
-#mid = Frame(root, width=500, bg='#6666ff')
-#mid.pack(side=TOP)
-#meia_esquerda = Frame(mid, width=100)
-#meia_esquerda.pack(side=LEFT, pady=10)
-#meia_esquerdaPadding = Frame(mid, width=350, bg="#6666ff")
-#meia_esquerdaPadding.pack(side=LEFT)
-#meia_direita = Frame(mid, width=100)
-#meia_direita.pack(side=RIGHT, pady=10)
-#baixo_direita = Frame(mid, width=100)
-#baixo_direita.pack(side=BOTTOM)
-#bottom = Frame(root, width=500)
-#bottom.pack(side=BOTTOM)
-#tableMargin = Frame(root, width=500)
-#tableMargin.pack(side=TOP)
+bot1 = Frame(bot, bg='#fff')
+bot1.pack(side=LEFT)
+bot2 = Frame(bot, bg='#fff')
+bot2.pack(side=LEFT)
 
 #Funções
 
@@ -65,8 +54,6 @@ def item_selecionado(event):
         print(f"ID: {record[0]}, Nome: {record[1]}, Idade: {record[2]}")
 
 def fetch_data():
-    
-    # Execute uma consulta
     cur.execute("SELECT ID, Nome, Materia FROM Professores")
     rows = cur.fetchall()
     
@@ -83,7 +70,6 @@ def checarid():
             msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
         else:
             botao_editar()
-
 
 def botao_editar():
     ID = entry.get()
@@ -115,14 +101,14 @@ def botao_editar():
         lbl_materia = Label(form_contato, text='Matéria', font=('arial', 12))
         lbl_materia.grid(row=2, sticky=W)
 
-        # --------- ENTRY - CADASTRAR -------------
+        # --------- ENTRY - EDITAR -------------
         
         nome_entry = Entry(form_contato, font=('arial', 12))
         nome_entry.grid(row=1, column=1)
         nome_entry.focus()
         materia_entry = Entry(form_contato, font=('arial', 12))
         materia_entry.grid(row=2, column=1)
-
+        #Função do botão
         def botaoeditar():
             if nome_entry.get() == "" or materia_entry.get() == "":
                 msb.showwarning("", "Por favor, digite todos os campos.", icon="warning")
@@ -136,23 +122,28 @@ def botao_editar():
                     tree.insert('', tk.END, values=item)
                 janela_adicionar.destroy()
 
-    # --------- BOTÃO - CADASTRAR -------------
+    # --------- BOTÃO - Editar -------------
     bttn_enviardados = Button(form_contato, text="Confirmar",
                             width=50, command=botaoeditar)
     bttn_enviardados.grid(row=6, columnspan=2, pady=10)
 
 
 def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o respectivo professor, depois atauzaliza a Treeview.
-    resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
-    if resultado == 'yes':
-        ID = entry.get()
-        RemoverProfessor(ID)
-        tree.delete(*tree.get_children())
-        dados = fetch_data()
-        for item in dados:
-            tree.insert('', tk.END, values=item)
-    else :
+    check = entry.get()
+    if check == '':
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
         return 0 
+    else:    
+        resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
+        if resultado == 'yes':
+            ID = entry.get()
+            RemoverProfessor(ID)
+            tree.delete(*tree.get_children())
+            dados = fetch_data()
+            for item in dados:
+                tree.insert('', tk.END, values=item)
+        else :
+            return 0 
 
 
 def botao_adicionar():
@@ -229,9 +220,10 @@ for item in dados:
     tree.insert('', tk.END, values=item)
 
 #Entrada ID
-entry = Entry(bot, width=7)
+entry = Entry(bot2, width=7)
 entry.pack(pady=10)
-
+lbl_id = Label(bot1, text='Digite o ID :', bg='#fff')
+lbl_id.pack(side=LEFT)
 #Botões
 butao = Button(mid1, text="Remover", command=botao_remover)
 butao.pack(pady=10)

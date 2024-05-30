@@ -94,11 +94,11 @@ def CriarSala(IDProfessor, Horario):
         cur.execute("INSERT INTO Salas (IDPROFESSOR, Materia, Horario, Alunos) VALUES (?, ?, ?, ?)", (IDProfessor, Materia, Horario, aluno))
         conn.commit()
     except sqlite3.Error as e:
-        print(e)
+        msb.showwarning("", "Horarios podem ser apenas 'manha' ou 'tarde'", icon="warning")
 
 
 def RemoverSala(IDProfessor):
-    cur.execute()("DELETE FROM Salas WHERE IDPROFESSOR = ?", IDProfessor)
+    cur.execute(f"DELETE FROM Salas WHERE IDPROFESSOR = {IDProfessor}")
     conn.commit()
 
 
@@ -107,8 +107,6 @@ def ColocarAluno(IDAluno, IDProfessor):
         print("Id do aluno não pode ser 0")
         return 0
     cur.execute(f"UPDATE Salas SET Alunos = Alunos || '{IDAluno} ' WHERE IDPROFESSOR = ?", (IDProfessor,))
-    #cur.execute("UPDATE \"Salas\" SET \"Alunos\" = \"Alunos\" || '[%s]' WHERE \"IDPROFESSOR\" = %s;", (IDALUNO, IDPROFESSOR))
-    #cur.execute("INSERT INTO \"Salas\"(\"Alunos\") VALUES (%s) WHERE \"IDPROFESSOR\" = (%s)", (IDALUNO, IDPROFESSOR))
     conn.commit()
 
 
@@ -116,7 +114,8 @@ def TirarAluno(IDAluno, IDProfessor):
     if IDAluno == 0 :
         print("Id do aluno não pode ser 0")
         return 0
-    cur.execute(f"UPDATE Salas SET Alunos = REPLACE(Alunos, '{IDAluno} ', '') WHERE IDPROFESSOR = ?;", (IDProfessor,))
-    conn.commit()
+    else:
+        cur.execute(f"UPDATE Salas SET Alunos = REPLACE(Alunos, '{IDAluno} ', '') WHERE IDPROFESSOR = ?;", (IDProfessor,))
+        conn.commit()
 
     

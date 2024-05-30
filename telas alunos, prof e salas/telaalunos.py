@@ -1,7 +1,9 @@
-from paradassqlite import *
-from tkinter import *
+from paradassqlite import AdicionarAluno, RemoverAluno, EditarAluno, cur
+from tkinter import Frame, LEFT, TOP, N, W, E, S, Label, Tk, Toplevel, Entry, X, Button
 import tkinter as tk
 import tkinter.ttk as ttk
+import sqlite3
+import tkinter.messagebox as msb
 
 
 
@@ -38,23 +40,10 @@ mid3 = Frame(mid, bg='#fff')
 mid3.pack(side=LEFT)
 bot = Frame(mainframe, bg='#fff')
 bot.pack(side=TOP)
-
-#topo = Frame(root, width=500, bd=1, relief=SOLID)
-#topo.pack(side=TOP)
-#mid = Frame(root, width=500, bg='#6666ff')
-#mid.pack(side=TOP)
-#meia_esquerda = Frame(mid, width=100)
-#meia_esquerda.pack(side=LEFT, pady=10)
-#meia_esquerdaPadding = Frame(mid, width=350, bg="#6666ff")
-#meia_esquerdaPadding.pack(side=LEFT)
-#meia_direita = Frame(mid, width=100)
-#meia_direita.pack(side=RIGHT, pady=10)
-#baixo_direita = Frame(mid, width=100)
-#baixo_direita.pack(side=BOTTOM)
-#bottom = Frame(root, width=500)
-#bottom.pack(side=BOTTOM)
-#tableMargin = Frame(root, width=500)
-#tableMargin.pack(side=TOP)
+bot1 = Frame(bot, bg='#fff')
+bot1.pack(side=LEFT)
+bot2 = Frame(bot, bg='#fff')
+bot2.pack(side=LEFT)
 
 #Funções
 
@@ -135,17 +124,22 @@ def botao_editar():
     bttn_enviardados.grid(row=6, columnspan=2, pady=10)
 
 
-def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o respectivo professor, depois atauzaliza a Treeview.
-    resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
-    if resultado == 'yes':
-        ID = entry.get()
-        RemoverAluno(ID)
-        tree.delete(*tree.get_children())
-        dados = fetch_data()
-        for item in dados:
-            tree.insert('', tk.END, values=item)
-    else :
+def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o aluno, depois atualiza a Treeview.
+    check = entry.get()
+    if check == '':
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
         return 0 
+    else:    
+        resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
+        if resultado == 'yes':
+            ID = entry.get()
+            RemoverAluno(ID)
+            tree.delete(*tree.get_children())
+            dados = fetch_data()
+            for item in dados:
+                tree.insert('', tk.END, values=item)
+        else :
+            return 0 
 
 
 def botao_adicionar():
@@ -216,8 +210,10 @@ for item in dados:
     tree.insert('', tk.END, values=item)
 
 #Entrada ID
-entry = Entry(bot, width=7)
+entry = Entry(bot2, width=7)
 entry.pack(pady=10)
+lbl_id = Label(bot1, text='Digite o ID:', bg='#fff')
+lbl_id.pack(side=LEFT)
 
 #Botões
 butao = Button(mid1, text="Remover", command=botao_remover)

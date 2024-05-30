@@ -1,7 +1,9 @@
-from paradassqlite import *
-from tkinter import *
+from paradassqlite import CriarSala, ColocarAluno, TirarAluno, RemoverSala, cur
+from tkinter import Frame, LEFT, TOP, N, W, E, S, Label, Tk, Toplevel, Entry, X, Button
 import tkinter as tk
 import tkinter.ttk as ttk
+import sqlite3
+import tkinter.messagebox as msb
 
 
 
@@ -40,23 +42,11 @@ mid4 = Frame(mid, bg='#fff')
 mid4.pack(side=LEFT)
 bot = Frame(mainframe, bg='#fff')
 bot.pack(side=TOP)
+bot1 = Frame(bot, bg='#fff')
+bot1.pack(side=LEFT)
+bot2 = Frame(bot, bg='#fff')
+bot2.pack(side=LEFT)
 
-#topo = Frame(root, width=500, bd=1, relief=SOLID)
-#topo.pack(side=TOP)
-#mid = Frame(root, width=500, bg='#6666ff')
-#mid.pack(side=TOP)
-#meia_esquerda = Frame(mid, width=100)
-#meia_esquerda.pack(side=LEFT, pady=10)
-#meia_esquerdaPadding = Frame(mid, width=350, bg="#6666ff")
-#meia_esquerdaPadding.pack(side=LEFT)
-#meia_direita = Frame(mid, width=100)
-#meia_direita.pack(side=RIGHT, pady=10)
-#baixo_direita = Frame(mid, width=100)
-#baixo_direita.pack(side=BOTTOM)
-#bottom = Frame(root, width=500)
-#bottom.pack(side=BOTTOM)
-#tableMargin = Frame(root, width=500)
-#tableMargin.pack(side=TOP)
 
 #Funções
 
@@ -125,14 +115,14 @@ def botao_delaluno():
         lbl_id = Label(form_contato, text='ID Aluno', font=('arial', 12))
         lbl_id.grid(row=0, sticky=W)
 
-        # --------- ENTRY - CADASTRAR -------------
+        # --------- ENTRY - deletar -------------
         
         IDAluno_entry = Entry(form_contato, font=('arial', 12))
         IDAluno_entry.grid(row=0, column=1)
         IDAluno_entry.focus()
 
-        def botaoeditar():
-            if IDAluno_entry.get() == "" :
+        def botaodeletar():
+            if IDAluno_entry.get() == "":
                 msb.showwarning("", "Por favor, digite todos os campos.", icon="warning")
             else:
                 IDProfessor = ID
@@ -144,9 +134,9 @@ def botao_delaluno():
                     tree.insert('', tk.END, values=item)
                 janela_adicionar.destroy()
 
-    # --------- BOTÃO - CADASTRAR -------------
+    # --------- BOTÃO - deletar -------------
     bttn_enviardados = Button(form_contato, text="Confirmar",
-                            width=50, command=botaoeditar)
+                            width=50, command=botaodeletar)
     bttn_enviardados.grid(row=6, columnspan=2, pady=10)   
 
 def botao_addaluno():
@@ -207,17 +197,22 @@ def botao_addaluno():
     bttn_enviardados.grid(row=6, columnspan=2, pady=10)
 
 
-def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta o respectivo professor, depois atauzaliza a Treeview.
-    resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
-    if resultado == 'yes':
-        IDProfessor = entry.get()
-        RemoverSala(IDProfessor)
-        tree.delete(*tree.get_children())
-        dados = fetch_data()
-        for item in dados:
-            tree.insert('', tk.END, values=item)
-    else :
-        return 0
+def botao_remover(): #Quando clica no botão deletar, pega o ID digitado e roda a função que deleta a sala, depois atauzaliza a Treeview.
+    check = entry.get()
+    if check == '':
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
+        return 0 
+    else:
+        resultado = msb.askquestion('', 'Tem certeza que deseja deletar a sala?')
+        if resultado == 'yes':
+            IDProfessor = entry.get()
+            RemoverSala(IDProfessor)
+            tree.delete(*tree.get_children())
+            dados = fetch_data()
+            for item in dados:
+                tree.insert('', tk.END, values=item)
+        else :
+            return 0
     
 
 
@@ -273,10 +268,10 @@ def botao_adicionar():
 #Treeview
 
 tree = ttk.Treeview(top, columns=("IDPROFESSOR", "Materia", "Horario", "Alunos"), show='headings')
-tree.column(column='IDPROFESSOR', width=100, stretch=False)
-tree.column(column='Materia', width=100, stretch=False)
-tree.column(column='Horario', width=100, stretch=False)
-tree.column(column='Alunos', width=100, stretch=True)
+tree.column(column='IDPROFESSOR', width=125, stretch=False)
+tree.column(column='Materia', width=125, stretch=False)
+tree.column(column='Horario', width=125, stretch=False)
+tree.column(column='Alunos', width=125, stretch=True)
 
 # Definição das colunas
 tree.heading("IDPROFESSOR", text="IDPROFESSOR")
@@ -296,18 +291,20 @@ for item in dados:
     tree.insert('', tk.END, values=item)
 
 #Entrada ID
-entry = Entry(bot, width=7)
+entry = Entry(bot2, width=7)
 entry.pack(pady=10)
+lbl_id = Label(bot1, text='Digite o IDProfessor:', bg='#fff')
+lbl_id.pack(side=LEFT)
 
 #Botões
 butao = Button(mid1, text="Remover", command=botao_remover)
 butao.pack(pady=10)
 butao2 = Button(mid2, text="Adicionar", command=botao_adicionar)
 butao2.pack(pady=10)
-butao3 = Button(mid3, text="Adicionar Aluno", command=checaridadd)
-butao3.pack(pady=10)
-butao3 = Button(mid3, text="Remover Aluno", command=checariddel)
-butao3.pack(pady=10)
+butao3 = Button(mid3, text="Adicionar Aluno", command=checaridadd, width=15)
+butao3.pack()
+butao3 = Button(mid3, text="Remover Aluno", command=checariddel, width=15)
+butao3.pack()
 
 
 
