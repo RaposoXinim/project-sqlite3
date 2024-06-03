@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Label, Frame, Entry, Button, Toplevel
 from tkinter import messagebox
 from Tk_Banco import registro
 from PIL import Image, ImageTk
