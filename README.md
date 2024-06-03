@@ -1,5 +1,5 @@
 # project-sqlite3
-##Descrição
+## Descrição
 Projeto universitário
 
 Bibliotecas necessárias/usadas
@@ -12,7 +12,7 @@ Pillow
 
 -Criação, remoção e alteração de alunos, professores e salas
 
-##Como usar
+## Como usar
 Comece o código executando pelo main.py.
 
 Na página de login clique no botão de registro, faça uma conta e logue com ela.
