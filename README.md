@@ -15,4 +15,4 @@ Características
 -Criação, remoção e alteração de alunos, professores e salas
 
 Instrução de uso:
-  Comece o código executando pelo login.py
+  Comece o código executando pelo main.py
