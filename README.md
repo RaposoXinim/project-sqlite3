@@ -1,4 +1,4 @@
-# project-psycopg2
+# project-sqlite3
 
 Projeto universitário
 
