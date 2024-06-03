@@ -23,7 +23,7 @@ def login(root_login):
         else:
             try: 
                 resultado=logar(nome, senha)
-                if resultado: #TODO
+                if resultado:
                     Gerarlog(nome)
                     messagebox.showinfo(message="Entrou")
             except:
