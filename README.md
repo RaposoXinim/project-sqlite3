@@ -1,5 +1,5 @@
 # project-sqlite3
-
+##Descrição
 Projeto universitário
 
 Bibliotecas necessárias/usadas
@@ -8,11 +8,15 @@ Tkinter
 Sqlite3
 Pillow
 
-Características
-
 -Sistema de Login e Cadastro com geração de um log.txt
 
 -Criação, remoção e alteração de alunos, professores e salas
 
-Instrução de uso:
-  Comece o código executando pelo main.py
+##Como usar
+Comece o código executando pelo main.py.
+
+Na página de login clique no botão de registro, faça uma conta e logue com ela.
+
+O Menu principal tem três opções, alunos, professores e salas, clique em qualuqe um para ver a respectiva tela de manipulação de dados.
+
+Cada tela tem botões que fazem certa ações, adicionar, deletar e editar, e para a tela de salas, adiconar aluno e remover aluno, para os botões, editar, deletar, adicionar aluno e remover aluno precisam que um id seja colocado previamente no bloco de input.
