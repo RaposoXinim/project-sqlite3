@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import os
 from registro import root_registrar
 from Tk_Banco import logar, Gerarlog
+from menu_inicial import menu
 
 
 
@@ -26,6 +27,8 @@ def login(root_login):
                 if resultado:
                     Gerarlog(nome)
                     messagebox.showinfo(message="Entrou")
+                    root_login.destroy()
+                    menu()
             except:
                 print("Erro ao chamar a função logar")
 
@@ -91,6 +94,6 @@ def login(root_login):
 
     root_login.mainloop()
     
-if __name__ == '__main__':
+def iniciar():
     root_login=Tk()
     login(root_login)
