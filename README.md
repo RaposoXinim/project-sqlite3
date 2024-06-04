@@ -3,7 +3,7 @@
 Projeto universitário feito por:
 Caio Freire Proença
 Felipe Pires da Silva
-Emmanuel Alcântara
+Emmanuel Victor Alcântara Lopes
 Gabriella
 
 Bibliotecas necessárias/usadas
