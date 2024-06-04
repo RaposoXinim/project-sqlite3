@@ -74,14 +74,20 @@ def EditarProfessor(ID, NomeNovo, MateriaNova):
 
 
 def CriarSala(IDProfessor, Horario):
-    try:
-        cur.execute("SELECT Materia FROM Professores WHERE ID = ?", (IDProfessor,))
-        Materia = cur.fetchone()[0]
-        aluno = " 0 "
-        cur.execute("INSERT INTO Salas (IDPROFESSOR, Materia, Horario, Alunos) VALUES (?, ?, ?, ?)", (IDProfessor, Materia, Horario, aluno))
-        conn.commit()
-    except sqlite3.Error as e:
-        msb.showwarning("", "Horarios podem ser apenas 'manha' ou 'tarde'", icon="warning")
+    cur.execute(f"SELECT 1 FROM \"Professores\" WHERE \"IDPROFESSOR\" = {IDProfessor}")
+    resultado = cur.fetchone()
+    if resultado is None:
+        msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
+        return 0
+    else:
+        try:
+            cur.execute("SELECT Materia FROM Professores WHERE ID = ?", (IDProfessor,))
+            Materia = cur.fetchone()[0]
+            aluno = " 0 "
+            cur.execute("INSERT INTO Salas (IDPROFESSOR, Materia, Horario, Alunos) VALUES (?, ?, ?, ?)", (IDProfessor, Materia, Horario, aluno))
+            conn.commit()
+        except sqlite3.Error as e:
+            msb.showwarning("", "Horarios podem ser apenas 'manha' ou 'tarde'", icon="warning")
 
 
 def RemoverSala(IDProfessor):
