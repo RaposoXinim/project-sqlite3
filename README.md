@@ -1,9 +1,9 @@
 # project-sqlite3
 ## Descrição
 Projeto universitário feito por:
-Caio Freire Proença
-Felipe Pires da Silva
-Emmanuel Victor Alcântara Lopes
+Caio Freire Proença;
+Felipe Pires da Silva;
+Emmanuel Victor Alcântara Lopes;
 Gabriella
 
 Bibliotecas necessárias/usadas
