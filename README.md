@@ -1,6 +1,10 @@
 # project-sqlite3
 ## Descrição
-Projeto universitário
+Projeto universitário feito por:
+Caio Freire Proença
+Felipe Pires da Silva
+Emmanuel Alcântara
+Gabriella
 
 Bibliotecas necessárias/usadas
 
