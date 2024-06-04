@@ -18,24 +18,12 @@ conn=conectar()
 
 cur = conn.cursor()
 
-
-
-#@dataclass
-
-#class Aluno():
-#   ID : int
-#    Nome : str
-#
-#class Professor():
-#    ID : int
-#    Nome : str
-#    Materia : str
-
-
 def AdicionarAluno(ID, Nome):
     try:
         cur.execute("INSERT INTO Alunos VALUES (?, ?)", (ID, Nome))
         conn.commit()
+    except sqlite3.IntegrityError as e:
+        msb.showwarning("", "Falha em adicionar, verifique se o ID está correto!", icon="warning")
     except sqlite3.Error as e:
         print(e)
 
@@ -57,6 +45,8 @@ def AdiconarProfessor(ID, Nome, Materia):
     try:   
         cur.execute("""INSERT INTO \"Professores\"(\"ID\", \"Nome\", \"Materia\") VALUES (?, ?, ?)""", (ID, Nome, Materia))
         conn.commit()
+    except sqlite3.IntegrityError as e:
+        msb.showwarning("", "Falha em adicionar, verifique se o ID está correto!", icon="warning")
     except sqlite3.Error as e:
         msb.showwarning("erro", {e})
         conn.rollback()
