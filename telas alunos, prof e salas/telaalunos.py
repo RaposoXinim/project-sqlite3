@@ -130,7 +130,7 @@ def alunos():
             msb.showwarning("", "Por favor, digite um ID válido. ", icon="warning")
             return 0 
         else:    
-            resultado = msb.askquestion('', 'Tem certeza que deseja deletar o professor?')
+            resultado = msb.askquestion('', f'Tem certeza que deseja deletar o aluno de ID {check}?')
             if resultado == 'yes':
                 ID = entry.get()
                 RemoverAluno(ID)

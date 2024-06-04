@@ -24,9 +24,10 @@ def login(root_login):
         else:
             try: 
                 resultado=logar(nome, senha)
-                if resultado: #TODO
+                if resultado:
                     Gerarlog(nome)
                     messagebox.showinfo(message="Entrou")
+                    root_login.destroy()
                     menu()
             except:
                 print("Erro ao chamar a função logar")
