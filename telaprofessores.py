@@ -47,11 +47,6 @@ def professores():
 
     #Funções
 
-    def item_selecionado(event):
-        for selected_item in tree.selection():
-            item = tree.item(selected_item)
-            record = item['values']
-            print(f"ID: {record[0]}, Nome: {record[1]}, Idade: {record[2]}")
 
     def fetch_data():
         cur.execute("SELECT ID, Nome, Materia FROM Professores")
@@ -210,9 +205,6 @@ def professores():
 
     # Empacotamento da Treeview
     tree.pack(pady=20)
-
-    # Ligação do evento de seleção de item
-    tree.bind('<<TreeviewSelect>>', item_selecionado)
 
     # Busca de dados do banco de dados e inserção na Treeview
     dados = fetch_data()
